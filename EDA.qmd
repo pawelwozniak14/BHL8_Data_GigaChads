@@ -1,0 +1,16 @@
+---
+title: "EDA"
+format: html
+---
+
+# Exploratory Data Analysis 
+
+```{r}
+data <- readRDS("data/eda_data.rds")
+c(
+nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 2),]),
+nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 3),]),
+nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 4),]),
+nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 5),]))
+```
+
