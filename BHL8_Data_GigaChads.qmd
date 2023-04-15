@@ -10,6 +10,7 @@ library(tidyverse)
 library(ggcorrplot)
 
 load("data/model_data.rda")
+load("plots/eda_p.rda")
 ```
 
 ## Zrozumienie danych
@@ -49,21 +50,9 @@ Oraz wyszczególnione powody usterek:
 -   RNF - random failures - losowe uszkodzenia
 
 ```{r}
-model.matrix(~0+., data=model_data[,c(9:14)]) %>% 
-  cor(use="pairwise.complete.obs") %>% 
-  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
-```
-
-```{r}
-model.matrix(~0+., data=model_data[,c(3:9)]) %>% 
-  cor(use="pairwise.complete.obs") %>% 
-  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
-```
-
-```{r}
-model.matrix(~0+., data=model_data[,-c(1:2)]) %>% 
-  cor(use="pairwise.complete.obs") %>% 
-  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
+grid.arrange(p1,p2,ncol=1)
+grid.arrange(p3,p4,ncol=1)
+grid.arrange(p5,p6,ncol=1)
 ```
 
 Z macierzy korelacji widać, że ustreki maszy (co logczine) skorelowane są z poszczególnymi typami problemów funkcjonowania, lecz co ciekawe losowe usterki nie mają żadnego wpływu na pracę maszyn.
