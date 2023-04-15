@@ -5,13 +5,16 @@ colnames(data) <- c("UDI", "ID", "Type", "Air_temperature", "Process_temperature
 data$ID <- as.factor(data$ID)
 data$Type <- as.factor(data$Type)
 data$Machine_failure <- as.factor(data$Machine_failure)
+eda_data <- data
+saveRDS(eda_data, file="data/eda_data.rds")
 data$TWF <- as.factor(data$TWF)
 data$HDF <- as.factor(data$HDF)
 data$PWF <- as.factor(data$PWF)
 data$OSF <- as.factor(data$OSF)
 data$RNF <- as.factor(data$RNF)
-str(data)
+model_data <- data
 set.seed(2023)
-split <- initial_split(data, prop=0.75, strata="Machine_failure")
+split <- initial_split(model_data, prop=0.75, strata="Machine_failure")
 train_data <- training(split)
 test_data <- testing(split)
+save(model_data, split, train_data, test_data, file="data/model_data.rda")
