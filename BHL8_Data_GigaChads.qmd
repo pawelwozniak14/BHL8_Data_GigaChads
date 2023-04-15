@@ -2,9 +2,41 @@
 title: "BHL8_Data_GigaChads"
 ---
 
-## Quarto
+## Zrozumienie danych
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Wybrane przez nas zadanie analityczne dotyczy predykcji uszkodzenia maszyn magazynowych oraz analiza wrażliwości wybranych modeli.
+
+Opracowywany zbiór danych zawiera następujące zmienne
+
+-   UID - wunikalny identyfikator
+
+-   Product_ID - Numer seryjny produktu
+
+-   Type - wariant jakościowy produktu
+
+-   Air_temperature - temperatura powietrza w pokoju
+
+-   Process_temperature - temperatura w której wykonywany jest proces
+
+-   Rotational_speed - częstotliwość obrotowa
+
+-   Torque - moment obrotowy
+
+-   Tool_wear - czas pracy w minutach danego narzędzia
+
+-   Machine_failure - czy wystąpiła usterka
+
+Oraz wyszczególnione powody usterek:
+
+-   TWF - tool wear failure - uszkodzenie narzędzia
+
+-   HDF - heat dissipation failure - szkoda powstała w wyniku rozproszenia ciepłą
+
+-   PWF - power failure - usterk energetyczna
+
+-   OSF - overstrain failure - przeciążenie maszyny
+
+-   RNF - random failures - losowe uszkodzenia
 
 ```{r}
 1 + 1
