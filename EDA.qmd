@@ -3,7 +3,7 @@ title: "EDA"
 format: html
 ---
 
-# Exploratory Data Analysis 
+# Exploratory Data Analysis
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 data <- readRDS("data/eda_data.rds")
@@ -27,9 +27,9 @@ failures$failure_type <- as.factor(failures$failure_type)
 # data[which(data$RNF==1),]
 ```
 
-
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(grid)
 load("data/model_data.rda")
 
 model_data %>%
@@ -40,16 +40,30 @@ model_data %>%
     scale_fill_manual(values = c("blue","red"))+
     theme_classic(base_size = 15)
 
-failures %>%
+text_1 <- textGrob("Tool\nWear\nFailure", gp=gpar(fontsize=13))
+text_2 <- textGrob("Heat\ndissipation\nFailure", gp=gpar(fontsize=13))
+text_3 <- textGrob("Power\nFailure", gp=gpar(fontsize=13))
+text_4 <- textGrob("Overstrain\nFailure", gp=gpar(fontsize=13))
+text_5 <- textGrob("Random\nFailure", gp=gpar(fontsize=13))
+
+
+f1 <- failures %>%
   ggplot(aes(x=reorder(failure_type, -sum),y=sum,fill=failure_type))+
   geom_col(show.legend = F)+
   geom_hline(yintercept = seq(30,120,by=30), linetype = "dashed", color = "black", alpha = 0.4, size=0.3)+
   scale_y_continuous(breaks = seq(30,120,by=30))+
-  labs(x="Failure Type",y="Number of occurances")+
+  labs(x="Failure Type",y="Number of occurances",title="Occurrences of failure types")+
   scale_fill_brewer(palette = "Dark2")+
-  theme_classic(base_size = 15)
-```
+  theme_classic(base_size = 15)+
+  annotation_custom(text_2,xmin=1,xmax=1,ymin=-0.07,ymax=27)+ 
+  annotation_custom(text_4,xmin=2,xmax=2,ymin=-0.07,ymax=17)+
+  annotation_custom(text_3,xmin=3,xmax=3,ymin=-0.07,ymax=17)+ 
+  annotation_custom(text_1,xmin=4,xmax=4,ymin=-0.07,ymax=27)+
+  annotation_custom(text_5,xmin=5,xmax=5,ymin=-0.07,ymax=17)+
+  coord_cartesian(clip = "off")
 
+save(f1,file = "plots/eda_f.rda")
+```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(ggmosaic)
@@ -123,7 +137,6 @@ grid.arrange(p1,p2,ncol=1)
 grid.arrange(p3,p4,ncol=1)
 grid.arrange(p5,p6,ncol=1)
 ```
-
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 con1 <- data %>% 
