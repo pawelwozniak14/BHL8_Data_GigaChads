@@ -1,0 +1,7 @@
+library(rio)
+data <- import("data/ai4i2020.csv")
+str(data)
+colnames(data) <- c("UDI", "ID", "Type", "Air_temperature", "Process_temperature", "Rotational_speed", "Torque", "Tool_wear", "Machine_failure", "TWF", "HDF", "PWF", "OSF", "RNF")
+str(data)
+data$ID <- as.factor(data$ID)
+data$Type <- as.factor(data$Type)
