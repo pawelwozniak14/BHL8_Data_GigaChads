@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>BHL8_Data_GigaChads</title>
+<title>Utrzymanie maszyn w funkcjonowaniu magazynu</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,6 +34,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="BHL8_Data_GigaChads_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="BHL8_Data_GigaChads_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -45,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">BHL8_Data_GigaChads</h1>
+<h1 class="title">Utrzymanie maszyn w funkcjonowaniu magazynu</h1>
 </div>
 
 
@@ -91,18 +92,27 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Z macierzy korelacji widać, że ustreki maszy (co logczine) skorelowane są z poszczególnymi typami problemów funkcjonowania, lecz co ciekawe losowe usterki nie mają żadnego wpływu na pracę maszyn.</p>
+<p>Pozostałe silne korelacje również sa intuicyjnie logiczne tj. temperatura powietrza z temperaturą procesu oraz częstotliwość obrotowa z momentem obrotowym.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Wykresy rozkładu temperatur w przypadku powietrza sugeruje platokurtyczność oraz dla usterek maszyn dwumodalność z częstszym występowaniem w wyższych zakresach. Podobne zjawisko można zaobserwować dla temperatury procesu lecz kurtoza bliższa jest rozkładu normalnego dzięki czemu dla rozkładu w których występowały usterki uwydacznia się lewostronna asymetria. Możliwe że konieczne będzie transformowanie zmiennych dla lepszych rezultatów.</p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Z macierzy korelacji widać, że ustreki maszy (co logczine) skorelowane są z poszczególnymi typami problemów funkcjonowania, lecz co ciekawe losowe usterki nie mają żadnego wpływu na pracę maszyn.</p>
-<p>Pozostałe silne korelacje również sa intuicyjnie logiczne tj. temperatura powietrza z temperaturą procesu oraz częstotliwość obrotowa z momentem obrotowym.</p>
+<p>Rozkłady częstotliwości obrotowej niezależnie od występowania usterki maszyny kształtem przypominają rozkład <span class="math inline">\(\chi^2\)</span> ze względu na bardzo silną asymetrię prawostronną. Natomiast w przypadku momentu obrotowego dla braku usterki rozkład kształtem przypomina dzwon Gaussa ze średnią 40. Powyżej tej wartości w rozkładzie obserwacji, gdzie wystąpiła usterka widać nagły wzrost częstości występowania uszkodzeń.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Rozkład zużycia narzędzia do dwusetnej minuty jest jednostajny, natomiast powyżej tej wartości następuje gwałtowny wzrost częstotliwości występowania usterek, pozwala to podejrzewać że jest to istotna zmienna w kontekście utrzymania maszyn.</p>
+<p>Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie to wymagało uwzględnienia w przypadku budowania modeli uczenia maszynowego, szczególnie że jesto to zmienna która będzie przewidywana i dookoła której prowadzona będzie optymalizacja.</p>
 </section>
 <section id="budowa-modeli-uczenia-maszynowego" class="level2">
 <h2 class="anchored" data-anchor-id="budowa-modeli-uczenia-maszynowego">Budowa modeli uczenia maszynowego</h2>
