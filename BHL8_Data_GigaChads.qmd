@@ -5,6 +5,8 @@ title: "BHL8_Data_GigaChads"
 ```{r}
 library(tidyverse)
 library(ggcorrplot)
+
+load("data/model_data.rda")
 ```
 
 ## Zrozumienie danych
