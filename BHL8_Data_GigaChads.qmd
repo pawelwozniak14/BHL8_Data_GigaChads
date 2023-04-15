@@ -86,13 +86,11 @@ Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie
 grid.arrange(con1,con2,ncol=2)
 ```
 
-
 ```{r}
 f1
 ```
 
-Nejczęściej występującym typem usterki jest ta powstała w wyniku dyssypacji ciepła, drugim najczęstszym powodem wystąpienia usterek jest przeciążenie maszyny w nieznacznie mniejszej ilości przypadków jest to usterka z przyczyn energetycznych. Znacząco rzedziej występującym czynnikiem jest zużycie narzędzia, najrzadziej występujacą przyczyną są losowe uszkodzenia.
-
+Najczęściej występującym typem usterki jest ta powstała w wyniku dyssypacji ciepła, drugim najczęstszym powodem wystąpienia usterek jest przeciążenie maszyny w nieznacznie mniejszej ilości przypadków jest to usterka z przyczyn energetycznych. Znacząco rzedziej występującym czynnikiem jest zużycie narzędzia, najrzadziej występujacą przyczyną są losowe uszkodzenia.
 
 ## Budowa modeli uczenia maszynowego
 
@@ -100,16 +98,20 @@ Ze względu na silne niezrównoważenie klas zaobserwowane w części eksploracy
 
 Modele uczenia maszynowego zbudowane na cele zadania:
 
--   Random forest
+-   *Random Forest*
 
--   Decision tree
+-   *Decision Tree*
 
--   Suport vector machine
+-   *Support Vector Machine*
 
--   K-Nearest Nighbors
+-   *K-Nearest Neighbors*
 
--   Neural network
+-   *Neural Network(?)*
 
--   XGBoost
+-   *XGBoost*
 
--   Linear regression
+-   *Logistic Regression*
+
+Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. 
+
+

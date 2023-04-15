@@ -17,14 +17,14 @@ dt_wf <- workflow() %>%
   add_model(dt) %>% 
   add_recipe(rec)
 
-res <- vfold_cv(train, v = 10, strata="Machine_failure")
+res <- vfold_cv(train_data, v = 10, strata="Machine_failure")
 
 params <- extract_parameter_set_dials(dt)
 params <- finalize(params, train_data)
 
 grid <- grid_latin_hypercube(params, size = 15)
 
-met <- metric_set(f_meas, roc_auc, accuracy, j_index)
+met <- metric_set(f_meas, roc_auc, accuracy, sensitivity, specificity, recall, j_index)
 
 library(doParallel)
 registerDoParallel(cores = 5)
@@ -40,9 +40,9 @@ dt_res %>%
   flextable::flextable()
 
 dt_res %>% 
-  show_best("f_meas")
+  show_best("specificity")
 
-dt_best_param <- select_best(dt_res, "f_meas")
+dt_best_param <- select_best(dt_res, "specificity")
 
 dt_final <- dt_wf %>% 
   finalize_workflow(dt_best_param)
