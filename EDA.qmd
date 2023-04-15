@@ -5,17 +5,30 @@ format: html
 
 # Exploratory Data Analysis 
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 data <- readRDS("data/eda_data.rds")
 c(
 nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 2),]),
 nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 3),]),
 nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 4),]),
 nrow(data[which(data$TWF + data$HDF + data$PWF + data$OSF + data$RNF >= 5),]))
+
+
+
+
+failures <- data.frame(failure_type=c("TWF","HWD","PWF","OSF","RNF"),sum=c(sum(data$TWF),sum(data$HDF),sum(data$PWF),sum(data$OSF),sum(data$RNF)))
+
+failures$failure_type <- as.factor(failures$failure_type)
+
+# sum(failures$sum)-sum(as.numeric(data$Machine_failure)-1)
+# 
+# data[which(data$Machine_failure==0 & (data$TWF + data$HDF + data$PWF + data$OSF + data$RNF != 0)),]
+# 
+# data[which(data$RNF==1),]
 ```
 
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 load("data/model_data.rda")
 
@@ -27,16 +40,6 @@ model_data %>%
     scale_fill_manual(values = c("blue","red"))+
     theme_classic(base_size = 15)
 
-failures <- data.frame(failure_type=c("TWF","HWD","PWF","OSF","RNF"),sum=c(sum(data$TWF),sum(data$HDF),sum(data$PWF),sum(data$OSF),sum(data$RNF)))
-
-failures$failure_type <- as.factor(failures$failure_type)
-
-# sum(failures$sum)-sum(as.numeric(data$Machine_failure)-1)
-# 
-# data[which(data$Machine_failure==0 & (data$TWF + data$HDF + data$PWF + data$OSF + data$RNF != 0)),]
-# 
-# data[which(data$RNF==1),]
-
 failures %>%
   ggplot(aes(x=reorder(failure_type, -sum),y=sum,fill=failure_type))+
   geom_col()+
@@ -44,6 +47,87 @@ failures %>%
   scale_y_continuous(breaks = seq(30,120,by=30))+
   labs(x="Failure Type",y="Number of occurances")+
   scale_fill_brewer(palette = "Dark2")+
-  theme_classic()
+  theme_classic(base_size = 15)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(ggmosaic)
+library(ggcorrplot)
+
+ggplot(na.omit(model_data))+
+  geom_mosaic(aes(x = product(Machine_failure), fill=Type), show.legend = F)+
+  labs(title = "Zależność usterk od jakościo produktu")+
+  theme_mosaic()+
+  theme(plot.title = element_text(hjust = 0.5,size=22))
+##jedyny mozaikowy który ma chyba sens, ale może lepiej boxplotem
+
+model.matrix(~0+., data=model_data[,-c(1:2)]) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(gridExtra)
+
+p1 <- data %>% 
+  mutate(Machine_failure=ifelse(Machine_failure==1,"yes","no")) %>% 
+  ggplot(aes(x=Air_temperature,fill=Machine_failure,legend=F)) +
+  geom_histogram(colour="black")+
+  facet_wrap(~Machine_failure,scales="free_y",labeller = label_both)+
+  scale_fill_manual(values=c("blue","red"))+
+  theme(legend.position="none")+
+  labs(x="Air temperature", y = "Count")
+p2 <- data %>% 
+  mutate(Machine_failure=ifelse(Machine_failure==1,"yes","no")) %>% 
+  ggplot(aes(x=Process_temperature,fill=Machine_failure,legend=F)) +
+  geom_histogram(colour="black")+
+  facet_wrap(~Machine_failure,scales="free_y",labeller = label_both)+
+  scale_fill_manual(values=c("blue","red"))+
+  theme(legend.position="none")+
+  labs(x="Process temperature", y = "Count")
+p3 <- data %>% 
+  mutate(Machine_failure=ifelse(Machine_failure==1,"yes","no")) %>% 
+  ggplot(aes(x=Rotational_speed,fill=Machine_failure,legend=F)) +
+  geom_histogram(colour="black")+
+  facet_wrap(~Machine_failure,scales="free_y",labeller = label_both)+
+  scale_fill_manual(values=c("blue","red"))+
+  theme(legend.position="none")+
+  labs(x="Rotational speed", y = "Count")
+p4 <- data %>% 
+  mutate(Machine_failure=ifelse(Machine_failure==1,"yes","no")) %>% 
+  ggplot(aes(x=Torque,fill=Machine_failure,legend=F)) +
+  geom_histogram(colour="black")+
+  facet_wrap(~Machine_failure,scales="free_y",labeller = label_both)+
+  scale_fill_manual(values=c("blue","red"))+
+  theme(legend.position="none")+
+  labs(x="Torque", y = "Count")
+p5 <- data %>% 
+  mutate(Machine_failure=ifelse(Machine_failure==1,"yes","no")) %>% 
+  ggplot(aes(x=Tool_wear,fill=Machine_failure,legend=F)) +
+  geom_histogram(colour="black")+
+  facet_wrap(~Machine_failure,scales="free_y",labeller = label_both)+
+  scale_fill_manual(values=c("blue","red"))+
+  theme(legend.position="none")+
+  labs(x="Tool Wear", y = "Count")
+p6 <- data %>% 
+  ggplot(aes(x=Machine_failure,fill=Machine_failure)) +
+  geom_bar(colour="black")+
+    scale_fill_manual(values=c("blue","red"))+
+  theme(legend.position="none")+
+  labs(x="Machine failure", y = "Count")
+
+
+grid.arrange(p1,p2,ncol=1)
+grid.arrange(p3,p4,ncol=1)
+grid.arrange(p5,p6,ncol=1)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+data %>% 
+  ggplot(aes(x=Air_temperature,y=Process_temperature))+
+  geom_smooth()+
+  geom_point(alpha=0.05)
 ```
 
