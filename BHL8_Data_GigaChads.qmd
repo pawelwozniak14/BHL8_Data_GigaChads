@@ -1,5 +1,8 @@
 ---
-title: "BHL8_Data_GigaChads"
+title: "Utrzymanie maszyn w funkcjonowaniu magazynu"
+execute:
+  echo: false
+  warning: false
 ---
 
 ```{r}
