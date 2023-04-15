@@ -42,13 +42,12 @@ model_data %>%
 
 failures %>%
   ggplot(aes(x=reorder(failure_type, -sum),y=sum,fill=failure_type))+
-  geom_col(show.legend = FALSE)+
+  geom_col(show.legend = F)+
   geom_hline(yintercept = seq(30,120,by=30), linetype = "dashed", color = "black", alpha = 0.4, size=0.3)+
   scale_y_continuous(breaks = seq(30,120,by=30))+
   labs(x="Failure Type",y="Number of occurances")+
   scale_fill_brewer(palette = "Dark2")+
-  theme_classic(base_size = 15)+
-  theme()
+  theme_classic(base_size = 15)
 ```
 
 
@@ -58,7 +57,7 @@ library(ggcorrplot)
 
 ggplot(na.omit(model_data))+
   geom_mosaic(aes(x = product(Machine_failure), fill=Type), show.legend = F)+
-  labs(title = "Zależność usterk od jakości od produktu")+
+  labs(title = "Zależność usterk od jakościo produktu")+
   theme_mosaic()+
   theme(plot.title = element_text(hjust = 0.5,size=22))
 ##jedyny mozaikowy który ma chyba sens, ale może lepiej boxplotem
@@ -118,6 +117,7 @@ p6 <- data %>%
   theme(legend.position="none")+
   labs(x="Machine failure", y = "Count")
 
+save(p1,p2,p3,p4,p5,p6,file = "plots/eda_p.rda")
 
 grid.arrange(p1,p2,ncol=1)
 grid.arrange(p3,p4,ncol=1)
@@ -126,21 +126,27 @@ grid.arrange(p5,p6,ncol=1)
 
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
-data %>% 
+con1 <- data %>% 
   ggplot(aes(x=Air_temperature,y=Process_temperature))+
   geom_smooth()+
   geom_point(alpha=0.05)+
   labs(title = "Process teperature relative to air temperature",
        x="Process temperature [K]",
-       y="Air temperature [K]")
+       y="Air temperature [K]")+
+  theme_minimal(base_size = 25)+
+  theme(axis.line = element_line(colour = "black"))
 
-data %>% 
+con2 <- data %>% 
   ggplot(aes(x=Rotational_speed,y=Torque))+
   geom_smooth(se=F)+
   geom_point(alpha=0.05)+
   labs(title = "Torque relative to rotational speed",
        x="Rotational speed [rpm]",
-       y="Torque [Nm]")
+       y="Torque [Nm]")+
+  theme_minimal(base_size = 25)+
+  theme(axis.line = element_line(colour = "black"))
+
+save(con1,con2,file = "plots/eda_con.rda")
 ```
 
 ```{r}

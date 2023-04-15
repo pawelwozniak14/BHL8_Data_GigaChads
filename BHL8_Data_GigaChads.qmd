@@ -12,6 +12,7 @@ library(gridExtra)
 
 load("data/model_data.rda")
 load("plots/eda_p.rda")
+load("plots/eda_con.rda")
 ```
 
 ## Zrozumienie danych
@@ -82,6 +83,11 @@ grid.arrange(p5,p6,ncol=1)
 Rozkład zużycia narzędzia do dwusetnej minuty jest jednostajny, natomiast powyżej tej wartości następuje gwałtowny wzrost częstotliwości występowania usterek, pozwala to podejrzewać że jest to istotna zmienna w kontekście utrzymania maszyn.
 
 Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie to wymagało uwzględnienia w przypadku budowania modeli uczenia maszynowego, szczególnie że jesto to zmienna która będzie przewidywana i dookoła której prowadzona będzie optymalizacja.
+
+```{r fig.width = 20, fig.height = 8}
+grid.arrange(con1,con2,ncol=2)
+```
+
 
 ## Budowa modeli uczenia maszynowego
 
