@@ -2,13 +2,18 @@
 title: "BHL8_Data_GigaChads"
 ---
 
+```{r}
+library(tidyverse)
+library(ggcorrplot)
+```
+
 ## Zrozumienie danych
 
 Wybrane przez nas zadanie analityczne dotyczy predykcji uszkodzenia maszyn magazynowych oraz analiza wrażliwości wybranych modeli.
 
 Opracowywany zbiór danych zawiera następujące zmienne
 
--   UID - wunikalny identyfikator
+-   UID - unikalny identyfikator
 
 -   Product_ID - Numer seryjny produktu
 
@@ -39,5 +44,44 @@ Oraz wyszczególnione powody usterek:
 -   RNF - random failures - losowe uszkodzenia
 
 ```{r}
-1 + 1
+model.matrix(~0+., data=model_data[,c(9:14)]) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
 ```
+
+```{r}
+model.matrix(~0+., data=model_data[,c(3:9)]) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
+```
+
+```{r}
+model.matrix(~0+., data=model_data[,-c(1:2)]) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
+```
+
+Z macierzy korelacji widać, że ustreki maszy (co logczine) skorelowane są z poszczególnymi typami problemów funkcjonowania, lecz co ciekawe losowe usterki nie mają żadnego wpływu na pracę maszyn.
+
+Pozostałe silne korelacje również sa intuicyjnie logiczne tj. temperatura powietrza z temperaturą procesu oraz częstotliwość obrotowa z momentem obrotowym.
+
+## Budowa modeli uczenia maszynowego
+
+Ze względu na silne niezrównoważenie klas zaobserwowane w części eksploracyjnej zdecydowaliśmy się na zastosowanie metody upsamplingu w technice SMOTE (Synthetic Minority Oversampling Technique) chcąc uniknąć zjawiska nadmiernego dopasowania przy jednoczesnym zachowaniu jakości predykcji.
+
+Modele uczenia maszynowego zbudowane na cele zadania:
+
+-   Random forest
+
+-   Decision tree
+
+-   Suport vector machine
+
+-   K-Nearest Nighbors
+
+-   Neural network
+
+-   XGBoost
+
+-   Linear regression
+
