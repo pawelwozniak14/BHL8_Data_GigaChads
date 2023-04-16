@@ -11,7 +11,7 @@ rec <- recipe(Machine_failure~Type+Air_temperature+Process_temperature+Rotationa
 nb <- naive_Bayes(smoothness = tune(),
                         Laplace = tune()) %>% 
   set_mode("classification") %>% 
-  set_engine("klaR")
+  set_engine("klaR",verbose=0)
 
 nb_wf <- workflow() %>%
   add_model(nb) %>% 
@@ -62,5 +62,5 @@ pred <- predict(nb_fit, new_data=test_data)
 pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
-
-saveRDS(nb_fit, "models/nb.rds")
+save(nb_res, nb_fit, nb_final, file = "models/NB.rda")
+# saveRDS(nb_fit, "models/nb.rds")
