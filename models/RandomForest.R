@@ -58,8 +58,6 @@ rf_fit <- rf_final %>%
 rf_fit <- rf_final %>% 
   fit(data=train_data)
 
-rf_fit <- readRDS("models/rf.rds")
-
 pred <- predict(rf_fit, new_data=test_data)
 pred <- cbind(test_data, pred)
 metrics(pred, truth=Machine_failure, estimate=.pred_class)
@@ -68,9 +66,7 @@ conf_mat
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
 
-
-
-saveRDS(rf_fit, "models/rf.rds")
+save(rf_fit,rf_final,rf_res, file="models/rf.rda")
 
 
 
