@@ -27,7 +27,7 @@ grid <- grid_latin_hypercube(params, size = 15)
 met <- metric_set(f_meas, roc_auc, accuracy, sensitivity, specificity, recall, j_index)
 
 library(doParallel)
-registerDoParallel(cores = 5)
+registerDoParallel(cores = 3)
 dt_res <-
   dt_wf %>%
   tune_grid(

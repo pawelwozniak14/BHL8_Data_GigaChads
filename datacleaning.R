@@ -12,6 +12,8 @@ data$HDF <- as.factor(data$HDF)
 data$PWF <- as.factor(data$PWF)
 data$OSF <- as.factor(data$OSF)
 data$RNF <- as.factor(data$RNF)
+data$Tool_wear <- as.numeric(data$Tool_wear)
+data$Rotational_speed <- as.numeric(data$Rotational_speed)
 model_data <- data
 set.seed(2023)
 split <- initial_split(model_data, prop=0.75, strata="Machine_failure")
