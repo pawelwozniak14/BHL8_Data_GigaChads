@@ -10,9 +10,10 @@ rf_metrics <- rf_metrics[,-2]
 metric_names <- rf_metrics[,1]
 rf_metrics <- rf_metrics[,2]
 colnames(rf_metrics) <- c("Random Forest")
-colnames(metric_names) <- c("Metric")
 rf_metrics
-metric_names
+metric_names <- matrix(c("F1 score", "Accuracy", "Sensitivity", "Specificity", "Recall", "J index"), ncol=1)
+colnames(metric_names) <- c("Metric")
+
 
 load("models/xgb.rda")
 
