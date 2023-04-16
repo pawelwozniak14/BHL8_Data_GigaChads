@@ -55,4 +55,4 @@ pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
 
-saveRDS(dt_fit, "models/dt.rds")
+save(dt_fit, dt_final, dt_res, file="models/dt.rda")
