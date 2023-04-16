@@ -46,11 +46,6 @@ glm_best_param <- select_best(glm_res, "specificity")
 glm_final <- glm_wf %>% 
   finalize_workflow(glm_best_param)
 
-rec_test_data <- recipe(Machine_failure~Type+Air_temperature+Process_temperature+Rotational_speed+Torque+Tool_wear, data=test_data) %>% 
-  step_dummy(all_factor_predictors()) %>% 
-  prep() %>% 
-  juice()
-
 glm_fit <- glm_final %>% 
   fit(data=train_data)
 
@@ -58,5 +53,5 @@ pred <- predict(glm_fit, new_data=test_data)
 pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
-
+save(glm_fit, glm_final, glm_res, file="models/LogisticRegression.rda")
 saveRDS(glm_fit, "models/LogisticRegression.rds")
