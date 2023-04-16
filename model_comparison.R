@@ -36,7 +36,7 @@ conf_mat_rf <- conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 met <- metric_set(f_meas, accuracy, sensitivity, specificity, recall, j_index)
 svm_metrics <- met(data=pred, truth=Machine_failure, estimate=.pred_class)
 svm_metrics <- svm_metrics[,3]
-colnames(svm_metrics) <- c("Support Vector Machine")
+colnames(svm_metrics) <- c("Support Vector Machines")
 svm_metrics
 
 load("models/dt.rda")
