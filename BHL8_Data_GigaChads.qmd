@@ -102,18 +102,16 @@ Modele uczenia maszynowego zbudowane na cele zadania:
 
 -   *Decision Tree*
 
--   *Support Vector Machine*
+-   *Support Vector Machines*
 
 -   *K-Nearest Neighbors*
 
--   *Neural Network(?)*
+-   *Bagging*
 
 -   *XGBoost*
 
 -   *Logistic Regression*
 
-Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \\
-Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
+-   *Naive Beyes*
 
-
-
+Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \\ Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
