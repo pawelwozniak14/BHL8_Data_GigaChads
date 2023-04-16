@@ -31,7 +31,7 @@ grid <- grid_latin_hypercube(params, size = 15)
 met <- metric_set(f_meas, roc_auc, accuracy, sensitivity, specificity, recall, j_index)
 
 library(doParallel)
-registerDoParallel(cores = 5)
+registerDoParallel(cores = 8)
 xgb_res <-
   xgb_wf %>%
   tune_grid(
@@ -58,5 +58,5 @@ pred <- predict(xgb_fit, new_data=test_data)
 pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
-save(xgb_res, xgb_fit, xgb_final, "models/xgb.rda")
-saveRDS(xgb_fit, "models/xgb.rds")
+save(xgb_res, xgb_fit, xgb_final, file = "models/xgb.rda")
+# saveRDS(xgb_fit, "models/xgb.rds")
