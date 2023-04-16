@@ -84,7 +84,7 @@ Rozkład zużycia narzędzia do dwusetnej minuty jest jednostajny, natomiast pow
 Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie to wymagało uwzględnienia w przypadku budowania modeli uczenia maszynowego, szczególnie że jesto to zmienna która będzie przewidywana i dookoła której prowadzona będzie optymalizacja.
 
 ```{r fig.width = 20, fig.height = 8}
-#grid.arrange(con1,con2,ncol=2)
+grid.arrange(con1,con2,ncol=2)
 ```
 
 ```{r}
@@ -113,16 +113,22 @@ Modele uczenia maszynowego zbudowane na cele zadania:
 
 -   *Logistic Regression*
 
-Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \\
-Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
+Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \\ Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
 
 ## Kontrola jakości i analiza wyników
 
-```{r}
+```{r fig.height=9.5}
 readRDS("plots/vip_plot.rds")
 ```
 
-```{r}
-pdp1 + pdp2 + pdp3 + pdp4 + patchwork::plot_layout(widths = c(1,1))
+
+```{r fig.width=8}
+#| layout-ncol: 2
+pdp1
+pdp2
+pdp3
+pdp4
+pdp5
+pdp6
 ```
 

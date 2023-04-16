@@ -81,9 +81,9 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Oraz wyszczególnione powody usterek:</p>
 <ul>
-<li><p>TWF - tool wear failure - uszkodzenie narzędzia</p></li>
-<li><p>HDF - heat dissipation failure - szkoda powstała w wyniku rozproszenia ciepłą</p></li>
-<li><p>PWF - power failure - usterk energetyczna</p></li>
+<li><p>TWF - tool wear failure - szkoda powstała w wyniku zużycie narzędzia</p></li>
+<li><p>HDF - heat dissipation failure - szkoda powstała w wyniku dysypacji ciepła</p></li>
+<li><p>PWF - power failure - usterka z powodów energetycznych</p></li>
 <li><p>OSF - overstrain failure - przeciążenie maszyny</p></li>
 <li><p>RNF - random failures - losowe uszkodzenia</p></li>
 </ul>
@@ -118,20 +118,61 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1920"></p>
 </div>
 </div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Najczęściej występującym typem usterki jest ta powstała w wyniku dyssypacji ciepła, drugim najczęstszym powodem wystąpienia usterek jest przeciążenie maszyny w nieznacznie mniejszej ilości przypadków jest to usterka z przyczyn energetycznych. Znacząco rzedziej występującym czynnikiem jest zużycie narzędzia, najrzadziej występujacą przyczyną są losowe uszkodzenia.</p>
 </section>
 <section id="budowa-modeli-uczenia-maszynowego" class="level2">
 <h2 class="anchored" data-anchor-id="budowa-modeli-uczenia-maszynowego">Budowa modeli uczenia maszynowego</h2>
 <p>Ze względu na silne niezrównoważenie klas zaobserwowane w części eksploracyjnej zdecydowaliśmy się na zastosowanie metody upsamplingu w technice SMOTE (Synthetic Minority Oversampling Technique) chcąc uniknąć zjawiska nadmiernego dopasowania przy jednoczesnym zachowaniu jakości predykcji.</p>
 <p>Modele uczenia maszynowego zbudowane na cele zadania:</p>
 <ul>
-<li><p>Random forest</p></li>
-<li><p>Decision tree</p></li>
-<li><p>Suport vector machine</p></li>
-<li><p>K-Nearest Nighbors</p></li>
-<li><p>Neural network</p></li>
-<li><p>XGBoost</p></li>
-<li><p>Linear regression</p></li>
+<li><p><em>Random Forest</em></p></li>
+<li><p><em>Decision Tree</em></p></li>
+<li><p><em>Support Vector Machine</em></p></li>
+<li><p><em>K-Nearest Neighbors</em></p></li>
+<li><p><em>Neural Network(?)</em></p></li>
+<li><p><em>XGBoost</em></p></li>
+<li><p><em>Logistic Regression</em></p></li>
 </ul>
+<p>Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \ Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.</p>
+</section>
+<section id="kontrola-jakości-i-analiza-wyników" class="level2">
+<h2 class="anchored" data-anchor-id="kontrola-jakości-i-analiza-wyników">Kontrola jakości i analiza wyników</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid" width="768"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-9-4.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-9-5.png" class="img-fluid" width="768"></p>
+</div>
+<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img src="BHL8_Data_GigaChads_files/figure-html/unnamed-chunk-9-6.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</div>
 </section>
 
 </main>
