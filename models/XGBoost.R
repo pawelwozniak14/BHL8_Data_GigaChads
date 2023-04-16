@@ -2,6 +2,8 @@ library(tidymodels)
 library(themis)
 load("data/model_data.rda")
 
+set.seed(1410)
+
 rec <- recipe(Machine_failure~Type+Air_temperature+Process_temperature+Rotational_speed+Torque+Tool_wear, data=train_data) %>% 
   step_dummy(all_factor_predictors()) %>% 
   step_smote(Machine_failure) %>% 
