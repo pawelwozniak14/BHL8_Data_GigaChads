@@ -116,3 +116,4 @@ Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna
 Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
 
 
+

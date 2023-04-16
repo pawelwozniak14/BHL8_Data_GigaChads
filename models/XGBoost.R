@@ -51,14 +51,6 @@ xgb_best_param <- select_best(xgb_res, "specificity")
 xgb_final <- xgb_wf %>% 
   finalize_workflow(xgb_best_param)
 
-rec_test_data <- recipe(Machine_failure~Type+Air_temperature+Process_temperature+Rotational_speed+Torque+Tool_wear, data=test_data) %>% 
-  step_dummy(all_factor_predictors()) %>% 
-  prep() %>% 
-  juice()
-
-xgb_fit <- xgb_final %>% 
-  last_fit(xgb_final, metrics=met, split=split)
-
 xgb_fit <- xgb_final %>% 
   fit(data=train_data)
 
@@ -66,5 +58,5 @@ pred <- predict(xgb_fit, new_data=test_data)
 pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
-
+save(xgb_res, xgb_fit, xgb_final, "models/xgb.rda")
 saveRDS(xgb_fit, "models/xgb.rds")

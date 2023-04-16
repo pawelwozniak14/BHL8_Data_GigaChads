@@ -51,13 +51,6 @@ svm_best_param <- select_best(svm_res, "specificity")
 svm_final <- svm_wf %>% 
   finalize_workflow(svm_best_param)
 
-rec_test_data <- recipe(Machine_failure~Type+Air_temperature+Process_temperature+Rotational_speed+Torque+Tool_wear, data=test_data) %>% 
-  step_dummy(all_factor_predictors()) %>% 
-  prep() %>% 
-  juice()
-
-svm_fit <- svm_final %>% 
-  last_fit(svm_final, metrics=met, split=split)
 
 svm_fit <- svm_final %>% 
   fit(data=train_data)
@@ -66,7 +59,7 @@ pred <- predict(svm_fit, new_data=test_data)
 pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
-
+save(svm_fit, svm_final, svm_res, file="models/svm_poly.rda")
 saveRDS(svm_fit, "models/svm_poly.rds")
 
 #linear 0.83, 18/454
