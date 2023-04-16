@@ -62,4 +62,4 @@ pred <- cbind(test_data, pred)
 conf_mat(pred, truth=Machine_failure, estimate=.pred_class)
 
 
-saveRDS(knn_fit, "models/knn.rds")
+save(knn_fit,knn_final,knn_res, file="models/knn.rda")
