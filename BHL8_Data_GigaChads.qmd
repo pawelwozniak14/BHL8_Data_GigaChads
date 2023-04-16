@@ -14,6 +14,7 @@ load("data/model_data.rda")
 load("plots/eda_f.rda")
 load("plots/eda_p.rda")
 load("plots/eda_con.rda")
+load("plots/pdp_plots.rda")
 ```
 
 ## Zrozumienie danych
@@ -83,7 +84,7 @@ Rozkład zużycia narzędzia do dwusetnej minuty jest jednostajny, natomiast pow
 Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie to wymagało uwzględnienia w przypadku budowania modeli uczenia maszynowego, szczególnie że jesto to zmienna która będzie przewidywana i dookoła której prowadzona będzie optymalizacja.
 
 ```{r fig.width = 20, fig.height = 8}
-grid.arrange(con1,con2,ncol=2)
+#grid.arrange(con1,con2,ncol=2)
 ```
 
 ```{r}
@@ -102,16 +103,26 @@ Modele uczenia maszynowego zbudowane na cele zadania:
 
 -   *Decision Tree*
 
--   *Support Vector Machines*
+-   *Support Vector Machine*
 
 -   *K-Nearest Neighbors*
 
--   *Bagging*
+-   *Neural Network(?)*
 
 -   *XGBoost*
 
 -   *Logistic Regression*
 
--   *Naive Beyes*
+Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \\
+Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
 
-Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna. Jest ona potrzebna do poprawnego wnioskowania podczas analizy wrażliwości - w końcu, czy moglibyśmy zaufać takiej analizie bez zbudowania bardzo dobrego modelu? Uznajemy, że w logistyce bardzo ważna jest sprawność maszyn i celem nadrzędnym jest maksymalizacja specificity, co sprawi, że jeśli nasza predykcja będzie się mylić to będzie to robić częściej w taki sposób, że będziemy obawiać się usterki, mimo że ona się nie wydarzy, za to będzie niewiele przypadków, gdzie umknie nam zagrożenie. Uchronienie maszyny przed zepsuciem nie tylko sprawia, że oszczędzimy pieniądze na naprawie, ale również magazyn będzie bardziej efektywny, ponieważ nie stracimy ważnego narzędzia na czas naprawy. \\ Dostroiliśmy hiperparametry modeli korzystając z walidacji krzyżowej, przeszukiwania siatki latin hypercube oraz optymalizując wyniki modelu pod względem specificity.
+## Kontrola jakości i analiza wyników
+
+```{r}
+readRDS("plots/vip_plot.rds")
+```
+
+```{r}
+pdp1 + pdp2 + pdp3 + pdp4 + patchwork::plot_layout(widths = c(1,1))
+```
+
