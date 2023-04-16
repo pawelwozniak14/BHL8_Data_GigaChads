@@ -3,6 +3,7 @@ title: "Utrzymanie maszyn w funkcjonowaniu magazynu"
 execute:
   echo: false
   warning: false
+embed-resources: true
 ---
 
 ```{r}
@@ -20,7 +21,7 @@ load("model_summary_table.rda")
 
 ## Zrozumienie danych
 
-Wybrane przez nas zadanie analityczne dotyczy predykcji uszkodzenia maszyn magazynowych oraz analiza wrażliwości wybranych modeli.
+Wybrane przez nas zadanie analityczne dotyczy predykcji uszkodzenia maszyn magazynowych oraz analizy wrażliwości wybranych modeli.
 
 Opracowywany zbiór danych zawiera następujące zmienne
 
@@ -30,9 +31,9 @@ Opracowywany zbiór danych zawiera następujące zmienne
 
 -   Type - wariant jakościowy produktu
 
--   Air_temperature - temperatura powietrza w pokoju
+-   Air_temperature - temperatura powietrza w magazynie
 
--   Process_temperature - temperatura w której wykonywany jest proces
+-   Process_temperature - temperatura maszyny
 
 -   Rotational_speed - częstotliwość obrotowa
 
@@ -44,9 +45,9 @@ Opracowywany zbiór danych zawiera następujące zmienne
 
 Oraz wyszczególnione powody usterek:
 
--   TWF - tool wear failure - szkoda powstała w wyniku zużycie narzędzia
+-   TWF - tool wear failure - szkoda powstała w wyniku zużycia narzędzia
 
--   HDF - heat dissipation failure - szkoda powstała w wyniku dysypacji ciepła
+-   HDF - heat dissipation failure - szkoda powstała w wyniku dyssypacji ciepła
 
 -   PWF - power failure - usterka z powodów energetycznych
 
@@ -60,15 +61,15 @@ model.matrix(~0+., data=model_data[,-c(1:2)]) %>%
   ggcorrplot(show.diag=FALSE, type="lower", lab=TRUE, lab_size=2)
 ```
 
-Z macierzy korelacji widać, że ustreki maszy (co logczine) skorelowane są z poszczególnymi typami problemów funkcjonowania, lecz co ciekawe losowe usterki nie mają żadnego wpływu na pracę maszyn.
+Z macierzy korelacji widać, że ustreki maszy skorelowane są z poszczególnymi typami problemów funkcjonowania, lecz co ciekawe losowe usterki nie mają żadnego wpływu na pracę maszyn.
 
-Pozostałe silne korelacje również sa intuicyjnie logiczne tj. temperatura powietrza z temperaturą procesu oraz częstotliwość obrotowa z momentem obrotowym.
+Pozostałe silne korelacje również są przewidywalne tj. temperatura powietrza z temperaturą procesu oraz częstotliwość obrotowa z momentem obrotowym.
 
 ```{r}
 grid.arrange(p1,p2,ncol=1)
 ```
 
-Wykresy rozkładu temperatur w przypadku powietrza sugeruje platokurtyczność oraz dla usterek maszyn dwumodalność z częstszym występowaniem w wyższych zakresach. Podobne zjawisko można zaobserwować dla temperatury procesu lecz kurtoza bliższa jest rozkładu normalnego dzięki czemu dla rozkładu w których występowały usterki uwydacznia się lewostronna asymetria. Możliwe że konieczne będzie transformowanie zmiennych dla lepszych rezultatów.
+Wykres rozkładu temperatur w przypadku powietrza sugeruje platokurtyczność oraz wykres dla usterek maszyn ma widoczną dwumodalność z częstszym występowaniem w wyższych zakresach. Podobne zjawisko można zaobserwować dla temperatury procesu, lecz kurtoza bliższa jest rozkładu normalnego dzięki czemu dla rozkładu w których występowały usterki uwydacznia się lewostronna asymetria. Możliwe że konieczne będzie transformowanie zmiennych dla lepszych rezultatów.
 
 ```{r}
 grid.arrange(p3,p4,ncol=1)
@@ -82,11 +83,13 @@ grid.arrange(p5,p6,ncol=1)
 
 Rozkład zużycia narzędzia do dwusetnej minuty jest jednostajny, natomiast powyżej tej wartości następuje gwałtowny wzrost częstotliwości występowania usterek, pozwala to podejrzewać że jest to istotna zmienna w kontekście utrzymania maszyn.
 
-Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie to wymagało uwzględnienia w przypadku budowania modeli uczenia maszynowego, szczególnie że jesto to zmienna która będzie przewidywana i dookoła której prowadzona będzie optymalizacja.
+Dodatkowo widać bardzo silne niezbalansowanie klas w przypadku usterek, będzie to wymagało uwzględnienia w przypadku budowania modeli uczenia maszynowego, szczególnie że jest to zmienna która będzie przewidywana i dookoła której prowadzona będzie optymalizacja.
 
 ```{r fig.width = 20, fig.height = 8}
 grid.arrange(con1,con2,ncol=2)
 ```
+
+Na powyższych wykresach widać zależność pomiędzy zmiennymi ciągłymi zaobserwowaną na macierzy korelacji.
 
 ```{r}
 f1
@@ -138,19 +141,58 @@ curve
 
 Do analizy wrażliwości wybraliśmy Random Forest ze względu na dobry wynik AUC-ROC, Decision Tree ze względu na najlepszy wynik specificity oraz Support Vector Machines i XGBoost ze względu na drugi oraz trzeci wynik ze względu na AUC-ROC i specificity.
 
-## Kontrola jakości i analiza wyników
+## Analiza wrażliwości
 
 ```{r fig.height=9.5}
 readRDS("plots/vip_plot.rds")
 ```
 
-```{r fig.width=8}
+W przypadku trzech z czterech wybranych modeli do analizy wrażliwości ważność czynników kształtujących predykcje pokrywa się ze sobą.
+Należą do nich:
+
+-   Tool wear - zużycie narzędzia
+
+-   Torque - moment obrotowy
+
+-   Rotational speed - częstotliwość obrotowa
+
+-   Air temperature - temperatura powietrza
+
+W przypadku lasu losowego oraz SVM ważność jest rozłożona w przybliżeniu równomiernie, natomiast drzewo decyzyjne kładzie większy nacisk przy dokonywaniu predykcji na zużyciu narzędzia.
+
+Od wyżej wymienionych modeli nieco różni się XGBoost. W jego przypadku istotne są tylko trzy pierwsze predyktory pomiędzy którymi ważność jest rozłożona równomiernie.
+
+Dzięki wykorzystaniu Partial Dependencies Profiles możemy stwierdzić jak dokładnie wpływa wartość zmiennych niezależnych na otrzymywane wyniki, jest to technika szczególnie istotna w anzlizie gdyż działa w metodologi "Model-agnostic".
+
+```{r fig.height=8, fig.width=9}
 #| layout-ncol: 2
 pdp1
 pdp2
+```
+
+Wpływ częstotliwości rotacyjnej został uchwycony przez wszystkie modele, najgorzej przez las losowy obniżając o ponad połowę prawdopodobieństwo wystąpienia usterki dla niskich zakresów częstotliwości. Najbezpieczniejszy zakres dla pracy maszyny to 1300-2200 rpm, dodatkowo należy podejrzewać że jest to zależność kwadratowa co najsilniej uchwycone jest przez SVM oraz częściowo prze XGBoost, przewidując wyższe ryzyko wystąpienia usterki w zakresie częstotliwości powyżej 2200 rpm.
+
+Zależność zużycia narzędzia jest uchwycona w ten sam sposób dla wszystkich modeli. Do 200 minuty prawdopobieństwo wystąpienia usterki jest liniowe oraz na bardzo niskim poziomie (poza XGBostem w okolicach 5%), natomiast po przekroczeniu tego czasu użytkowania prawdopodobieństwo uszkodzenia gwałtwonie rośnie.
+
+```{r fig.height=8, fig.width=9}
+#| layout-ncol: 2
 pdp3
 pdp4
+```
+
+Moment obrotowy ze względu na stosunkowo silną korelację z częstotliowścią obrotową równiez charakteryzuje się kwadratową zależnością uchwyconą przez wszystkich kandydatów. Optymalny zakres pracy (tj. z najniższym prawdopodobieństwem usterki) maszyny jest w zakresie 18-58 Nm momentu obrotowego.
+
+Temperatura powietrza w magazynie dla modeli opartych o strukturę drzewa decyzyjnego jest stała do 301K po czym następuje skokowy wzrost. Podobną relację uchwyciła SVM.
+
+```{r fig.height=8, fig.width=9}
+#| layout-ncol: 2
 pdp5
 pdp6
 ```
 
+W przypadku temperatury mszyny modele dzielą się na dwie grupy. Drzewo decyzyjne oraz XGBoost nie wykorzystują tej zmiennej w ogóle do predykcji, co odwzorowane również jest w wykresie ważności zmiennych jako wartość zerowa. Natomiast SVM oraz las losowy wychwytują spadek w prawdopodobieństwie wystąpienia usterki wraz ze wzrostem predyktora.
+
+Żaden z trzech poziomów zmiennej kategorycznej type w czterech badanych modelach nie ma większego wpływu na usterkę względem pozostałych poziomów.
+
+Na podstawie przeprowadzonej analizy, spośród wszystkich zbudowanych modeli do wdrożenia wybralibyśmy rozwiązanie oparte na drzewie decyzyjnym.
+Wybór ten uzasadniamy wynikami uzyskanymi na zbiorze testowym, niską złożonością obliczeniową algorytmu oraz wynikami analizy wrażliwości
