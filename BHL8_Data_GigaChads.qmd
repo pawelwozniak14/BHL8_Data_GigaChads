@@ -103,11 +103,11 @@ Modele uczenia maszynowego zbudowane na cele zadania:
 
 -   *Decision Tree*
 
--   *Support Vector Machines*
+-   *Support Vector Machine*
 
 -   *K-Nearest Neighbors*
 
--   *Bagging*
+-   *Neural Network(?)*
 
 -   *XGBoost*
 
@@ -121,6 +121,7 @@ Istotnym celem budowy powyższych modeli jest jak najlepsza jakość predykcyjna
 readRDS("plots/vip_plot.rds")
 ```
 
+
 ```{r fig.width=8}
 #| layout-ncol: 2
 pdp1
@@ -130,3 +131,4 @@ pdp4
 pdp5
 pdp6
 ```
+
