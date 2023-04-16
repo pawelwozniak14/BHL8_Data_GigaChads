@@ -95,7 +95,7 @@ colnames(bg_metrics) <- c("Bagging")
 bg_metrics
 
 summary_table <- metric_names %>% 
-  cbind(rf_metrics, xgb_metrics, svm_metrics, dt_metrics, glm_metrics, knn_metrics, nb_metrics, bg_metrics) %>% flextable::flextable()
+  cbind(rf_metrics, xgb_metrics, svm_metrics, dt_metrics, glm_metrics, knn_metrics, nb_metrics, bg_metrics)
 
-saveRDS(summary_table, "model_summary_table.rds")
+save(summary_table, file="model_summary_table.rda")
 
